@@ -42,6 +42,28 @@
 
 	<div class="container">
 			<h1>게시판</h1>
+			<div>총 건수: <span th:text="${#lists.size(boards)}"></span></div>
+			<table class="table">
+			  <thead>
+			    <tr>
+			      <th scope="col">번호</th>
+			      <th scope="col">제목</th>
+			      <th scope="col">작성자</th>
+			      <th scope="col">작성날짜</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr th:each="board : ${boards}">
+			      <th th:text ="${board.id}">1</th>
+			      <td th:text ="${board.title}">Mark</td>
+			      <td >작성자</td>
+			      <td th:text ="${board.joindate}">@mdo</td>
+			    </tr>
+			  </tbody>  
+			</table>
+			<div class="text-end">
+			<button type="button" class="btn btn-primary">글쓰기</button>
+			</div>
 	</div>	
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
