@@ -5,6 +5,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.validation.Valid;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,8 +33,18 @@ public class BoardController {
 	private final BoardValidator boardbalidator;
 	
 	@GetMapping("/list")
-	public String list(Model model) {
-	List<Board> boards= boardRepository.findAll();
+	public String list(Model model,@PageableDefault(size = 2) Pageable pageable,@RequestParam(required = false, defaultValue = "") String searchText) {
+	//List<Board> boards= boardRepository.findAll();
+	//Page<Board> boards = boardRepository.findAll(pageable);
+	Page<Board> boards = boardRepository.findByTitleContainingOrContentContaining(searchText, searchText, pageable);
+	int startpage =Math.max(1, boards.getPageable().getPageNumber()) ;
+	int endpage =Math.max( boards.getTotalPages(), boards.getPageable().getPageNumber() );
+	System.out.println("startpage ="+startpage);
+	System.out.println("endpage =" +endpage);
+	System.out.println("boards.getTotalPages() ="+boards.getTotalPages());
+	System.out.println("boards.getPageable().getPageNumber() =" +boards.getPageable().getPageNumber() );
+	model.addAttribute("startpage",startpage);
+	model.addAttribute("endpage",endpage);
 	model.addAttribute("boards",boards);
 	return "board/list";
 	}
