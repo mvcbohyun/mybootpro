@@ -30,6 +30,7 @@ public class AccountController {
 	
 	@PostMapping("/register") 
 	public String register(User user) {
+		System.out.println("111111111111111");
 		userService.save(user);
 		return "redirect:/"; 
 	}
